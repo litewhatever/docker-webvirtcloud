@@ -15,6 +15,8 @@ RUN apt-get update -qqy && \
     python-dev \
     libxml2-dev \
     libvirt-dev \
+    libldap2-dev \
+    libsasl2-dev \
     zlib1g-dev \
     nginx \
     supervisor \
@@ -40,6 +42,8 @@ RUN curl -L -o $COMMITID.zip https://github.com/retspen/webvirtcloud/archive/$CO
     mkdir data && \
     cp webvirtcloud/settings.py.template webvirtcloud/settings.py && \
     sed -i "s|'db.sqlite3'|'data/db.sqlite3'|" webvirtcloud/settings.py && \
+    sed -i "/^$/d" conf/requirements.txt && \
+    echo "django-auth-ldap==1.6.1" >> conf/requirements.txt && \
     virtualenv venv && \
     . venv/bin/activate && \
     venv/bin/pip install -r conf/requirements.txt && \
@@ -67,5 +71,7 @@ RUN patch -p1 -u <01-wsproxy.patch && \
     cp conf/nginx/webvirtcloud.conf /etc/nginx/conf.d && \
     chown -R www-data:www-data /etc/nginx/conf.d/webvirtcloud.conf
 
-COPY startinit.sh /etc/my_init.d/startinit.sh
+ADD settings.py /srv/webvirtcloud/webvirtcloud/
+ADD ca-certificates.crt /srv/webvirtcloud/data/
 
+COPY startinit.sh /etc/my_init.d/startinit.sh

@@ -2,6 +2,8 @@
 
 retspen's WebVirtCloud is a web interface to kvm virtualization and can be found on [github](https://github.com/retspen/webvirtcloud)
 
+Adds support for LDAP
+
 ## docker hub version tag
 
 tag | description
