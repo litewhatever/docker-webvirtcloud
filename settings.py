@@ -53,14 +53,15 @@ AUTHENTICATION_BACKENDS = (
 )
 
 AUTH_LDAP_GLOBAL_OPTIONS = {
-  ldap.OPT_X_TLS_REQUIRE_CERT: os.getenv('LDAP_TLS_REQCERT', 'never'),
+  ldap.OPT_X_TLS_REQUIRE_CERT: os.getenv('LDAP_TLS_REQUIRE_CERT', False),
+  ldap.OPT_X_TLS_DEMAND: os.getenv('LDAP_TLS_DEMAND', False),
   ldap.OPT_REFERRALS: os.getenv('LDAP_REFERRALS', False),
   ldap.OPT_X_TLS_CACERTFILE: "/srv/webvirtcloud/data/ca-certificates.crt",
 }
 
 AUTH_LDAP_SERVER_URI = os.getenv('LDAP_SERVER_URI', 'ldap://server')
 AUTH_LDAP_BIND_DN = os.getenv('LDAP_BIND_DN', 'CN=ldapuser,OU=Users,DC=example,DC=com')
-AUTH_LDAP_BIND_PASSWORD = os.getenv('LDAP_BIND_DN', 'password')
+AUTH_LDAP_BIND_PASSWORD = os.getenv('LDAP_BIND_PASSWORD', 'password')
 AUTH_LDAP_USER_SEARCH = LDAPSearch(os.getenv('LDAP_USER_SEARCH', 'OU=Users,DC=example,DC=com'),
     ldap.SCOPE_SUBTREE, "(samAccountName=%(user)s)")
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch(os.getenv('LDAP_GROUP_SEARCH', 'OU=Groups,DC=example,DC=com'),
